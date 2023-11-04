@@ -3,11 +3,12 @@ import { getProducts } from "@/services";
 
 export default async function ProductsPage({
     params: {
-        segments: [category],
+        segments
     }
-} : {params: {segments: string[]}}
-) {
+} : {
+    params: {segments?: string[]}
+}) {
+    const category = segments?.[0]
     const products = await getProducts(category);
-
     return <Products products={products}/>
 }

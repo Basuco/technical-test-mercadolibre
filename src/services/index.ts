@@ -26,7 +26,7 @@ export const getCategories = async (products: Product[]) => {
     )
 
     const categories = await Promise.all(
-        ids.map(id => fetch(`https://api.mercadolibre.com/categories/${id}`)
+        ids.map(id => fetch(`${API_URL}/categories/${id}`)
         .then(res => res.json() as Promise<{path_from_root: PathFromRoot[]}>)
         .then(res => res.path_from_root))
     )
@@ -36,8 +36,8 @@ export const getCategories = async (products: Product[]) => {
     categories.forEach(productCategories => {
         productCategories.forEach((singleCategory, index) => {
             const { id } = singleCategory;
-            const parent = productCategories[index - 1];
-            const parentId = parent?.id;
+            const parent = productCategories[index - 1] as Category | undefined;
+            const parentId = parent?.id ?? null;
 
             draft[id] = {...singleCategory, parentId}
         })
